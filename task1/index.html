@@ -1,0 +1,46 @@
+<!doctype html>
+<html ng-app="app">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>DIY Rocks - Task 1 Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+
+    <script>
+      // Module definition for the refactored dashboard.
+      angular.module('app', []);
+    </script>
+    <script src="./userDashboardService.js"></script>
+    <script src="./userDashboardController.js"></script>
+  </head>
+
+  <body>
+    <!-- Refactored template -->
+    <div ng-controller="UserDashboardController">
+      <div ng-if="loading">Loading users...</div>
+
+      <div ng-if="error" style="color: #b00020;">
+        {{ error }}
+      </div>
+
+      <input ng-model="searchQuery" placeholder="Search users..." />
+
+      <div ng-repeat="user in filteredUsers track by user.id">
+        <h3>{{ user.name }}</h3>
+        <p>{{ user.email }}</p>
+        <button
+          ng-click="makeAdmin(user)"
+          ng-disabled="adminUpdatingUserId === user.id"
+          title="Set role to admin"
+        >
+          {{ adminUpdatingUserId === user.id ? 'Updating...' : 'Make Admin' }}
+        </button>
+      </div>
+
+      <div ng-if="!loading && filteredUsers.length === 0">
+        No users found
+      </div>
+    </div>
+  </body>
+</html>
+

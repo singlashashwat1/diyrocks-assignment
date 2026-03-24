@@ -1,0 +1,4 @@
+.DS_Store
+*.log
+task2/backend/node_modules/
+task2/backend/dist/

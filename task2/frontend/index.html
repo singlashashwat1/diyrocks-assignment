@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" ng-app="activityFeedApp">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Live Activity Feed — DIY Rocks Task 2</title>
+    <link rel="stylesheet" href="styles/app.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="app/app.module.js"></script>
+    <script src="app/activity-feed.service.js"></script>
+    <script src="app/activity-feed.controller.js"></script>
+  </head>
+  <body>
+    <div class="wrap" ng-controller="ActivityFeedController">
+      <h1>Live activity feed</h1>
+
+      <div class="alert" ng-if="rateLimitMessage">{{ rateLimitMessage }}</div>
+
+      <div class="grid">
+        <div class="panel">
+          <h2>New event</h2>
+          <form ng-submit="submitEvent()">
+            <div>
+              <label for="type">Type</label>
+              <input id="type" ng-model="form.type" required placeholder="e.g. order.created" />
+            </div>
+            <div>
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                ng-model="form.message"
+                required
+                placeholder="Describe what happened"
+              ></textarea>
+            </div>
+            <div>
+              <label for="priority">Priority</label>
+              <select id="priority" ng-model="form.priority" ng-options="p for p in priorities"></select>
+            </div>
+            <button type="submit" class="primary" ng-disabled="submitting">
+              {{ submitting ? 'Sending…' : 'Publish event' }}
+            </button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <h2>Counts by priority</h2>
+          <div class="counts">
+            <span class="count low">Low: {{ counts.low }}</span>
+            <span class="count normal">Normal: {{ counts.normal }}</span>
+            <span class="count high">High: {{ counts.high }}</span>
+          </div>
+          <p class="status">
+            Stream: {{ streamStatus }} · Events loaded: {{ events.length }}
+          </p>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top: 1rem">
+        <h2>Feed</h2>
+        <div class="feed">
+          <div
+            ng-repeat="e in events track by e.id"
+            class="event {{ e.priority }}"
+          >
+            <div class="meta">
+              <strong>{{ e.type }}</strong>
+              · {{ e.priority | uppercase }}
+              · {{ e.timestamp | date : 'medium' }}
+            </div>
+            <div class="msg">{{ e.message }}</div>
+          </div>
+          <p ng-if="events.length === 0" class="sub">No events yet.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

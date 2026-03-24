@@ -1,0 +1,27 @@
+<div ng-controller="UserDashboardController">
+  <div ng-if="loading">Loading users...</div>
+
+  <div ng-if="error" style="color: #b00020;">
+    {{ error }}
+  </div>
+
+  <input
+    ng-model="searchQuery"
+    placeholder="Search users..."
+  />
+
+  <div ng-repeat="user in filteredUsers track by user.id">
+    <h3>{{ user.name }}</h3>
+    <p>{{ user.email }}</p>
+    <button
+      ng-click="makeAdmin(user)"
+      ng-disabled="adminUpdatingUserId === user.id"
+      title="Set role to admin"
+    >
+      {{ adminUpdatingUserId === user.id ? 'Updating...' : 'Make Admin' }}
+    </button>
+  </div>
+
+  <div ng-if="!loading && filteredUsers.length === 0">No users found</div>
+</div>
+
