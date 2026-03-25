@@ -18,7 +18,7 @@ export interface ActivityEvent {
 }
 
 /** Maximum number of events retained in memory (assessment requirement). */
-const MAX_BUFFER = 5;
+const MAX_BUFFER = 50;
 
 /**
  * In-memory event buffer with priority-aware eviction and a hot stream for SSE clients.
